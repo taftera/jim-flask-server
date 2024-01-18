@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Flask APP</title>
+</head>
+
+<body>
+  <p>basic btn</p>
+  <button id="basicButton">basic btn</button>
+  <p>custom msg btn</p>
+  <button id="customButton" data-msg="custom msg">custom msg btn</button>
+
+  <script>
+    let basicButton = document.getElementById('basicButton');
+    basicButton.addEventListener('click', function () {
+      fetch('/button_click', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then(data => console.log(data.message))
+        .catch(error => console.error('Error:', error));
+    });
+
+    let customButton = document.getElementById('customButton');
+    customButton.addEventListener('click', function () {
+      let msg = this.getAttribute('data-msg');
+      console.log(`HTML: btn clicked, msg: ${msg}`)
+      fetch('/send_msg', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          'msg': msg
+        })
+      })
+        .then(response => response.json())
+        .then(data => console.log(data.message))
+        .catch(error => console.error('Error:', error));
+    });
+  </script>
+</body>
+
+</html>
